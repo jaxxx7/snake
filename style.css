@@ -1,53 +1,33 @@
 body {
-    background-color: darkslategray;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
-    height: 100vh; /* Assure que le body occupe toute la hauteur de la fenêtre */
+    height: 100vh;
+    background-color: darkslategray;
+    margin: 0;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
 }
 
-
 .game {
-    display: flex;   
-    border: 5px solid;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #snakeboard {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: aliceblue;
-  }
+    background-color: blanchedalmond;
+    border: 1px solid black;
+}
 
 .stat {
-    height: 50px;
-    background-color: darkgoldenrod;
     display: flex;
-    flex-direction:row;
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: white;
 }
 
-.score {
-    width: 50%;
-    text-align: center;
-    line-height: 50px;
-    font-size: x-large;
+.score, .record {
+    margin-inline: 3rem;
 }
-
-.record {
-    width: 50%;
-    text-align: center;
-    line-height: 50px;
-    font-size: x-large;
-}
-
-.snake {
-    height: 20px;
-    width: 20px;
-    background-color:green;
-    position:absolute;
-
-}
-

@@ -1,15 +1,20 @@
 const canvas = document.getElementById("snakeboard");
-let score = document.getElementById("score")
+const score = document.getElementById("score");
+const record = document.getElementById("record");
 const ctx = canvas.getContext("2d");
 const box = 20;
 let direction = "RIGHT";
 let currentScore = 0;
+let currentRecord = 0;
+let intervalId;
 
 let snake = [{
     x: 20,
     y: 20,
     color: "green"
 }];
+
+
 
 
 let food = {
@@ -19,6 +24,9 @@ let food = {
     height: 20,
     color: "red"
 };
+
+let head = { x: snake[0].x, y: snake[0].y, color: "green" };
+
 
 // Dessiner le serpent
 const drawSnake = () => {
@@ -73,7 +81,7 @@ function moveSnake() {
     if (head.x === food.x && head.y === food.y) {
         updateScore();
         generateFood();
-        drawFood();
+        updateRecord();
         
     } else {
         snake.pop()
@@ -81,6 +89,7 @@ function moveSnake() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Effacer le canvas
     drawSnake(); // Dessiner le serpent
     drawFood(); // Dessiner la nourriture
+    failed();
 }
 
 const updateScore = () => {
@@ -88,14 +97,29 @@ const updateScore = () => {
     score.textContent = currentScore
 }
 
-function generateFood() {
+const updateRecord = () => {
+    if (currentScore > currentRecord) {
+        currentRecord = currentScore;
+        record.textContent = currentRecord
+    }
+}
+
+const generateFood = () => {    
     food.x = box * Math.floor(Math.random() * 25);
     food.y = box * Math.floor(Math.random() * 25);
 }
 
+function failed() {
+    const head = snake[0];
+    if (head.x >= canvas.width || head.x < 0 || head.y >= canvas.height || head.y < 0) {
+        clearInterval(intervalId);  // Arrêter l'intervalle si le serpent est hors du canevas
+        console.log("Jeu terminé : Le serpent est hors des limites !");
+    }
+}
+
 drawFood(); // Initialisation de la nourriture
-drawSnake();
-setInterval(moveSnake, 200);
+drawSnake(); // Initialisation du serpent
+intervalId = setInterval(moveSnake, 200);
 
 
 

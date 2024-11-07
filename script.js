@@ -3,16 +3,20 @@ const score = document.getElementById("score");
 const record = document.getElementById("record");
 const ctx = canvas.getContext("2d");
 const box = 20;
+const buttonRetry = document.getElementById("buttonRetry");
+const textRetry = document.getElementById("textRetry");
+const retryDiv = document.getElementById("retry")
+retryDiv.style.display = "none";
+
 let direction = "RIGHT";
 let currentScore = 0;
+let snake = [{ x: 20,  y: 20, color: "green" }];
+
+
 let currentRecord = 0;
 let intervalId;
 
-let snake = [{
-    x: 20,
-    y: 20,
-    color: "green"
-}];
+
 
 
 
@@ -90,7 +94,10 @@ function moveSnake() {
     drawSnake(); // Dessiner le serpent
     drawFood(); // Dessiner la nourriture
     failed();
+    
 }
+
+
 
 const updateScore = () => {
     currentScore += 1;
@@ -111,15 +118,36 @@ const generateFood = () => {
 
 function failed() {
     const head = snake[0];
-    if (head.x >= canvas.width || head.x < 0 || head.y >= canvas.height || head.y < 0) {
-        clearInterval(intervalId);  // Arrêter l'intervalle si le serpent est hors du canevas
-        console.log("Jeu terminé : Le serpent est hors des limites !");
+    
+    snake.forEach((segment, index) => {
+        if (index != 0 && head.x === segment.x && head.y === segment.y) {
+            clearInterval(intervalId); // Arrêter l'intervalle si le serpent se mange
+            retry() 
+        }
+    });
+
+    if (head.x >= canvas.width || head.x < 0 || head.y >= canvas.height || head.y < 0 || head.x === snake.x && head.y === snake.y) {
+        clearInterval(intervalId);  // Arrêter l'intervalle si le serpent est hors du canvas
+        retry()
+
     }
 }
+
+function retry() {
+    retryDiv.style.display = "flex";
+    buttonRetry.addEventListener("click", function() {
+        clearInterval(intervalId)
+        snake = [{ x: 20,  y: 20, color: "green" }];
+        direction = "RIGHT";
+        currentScore = 0;
+        score.textContent = 0;
+        retryDiv.style.display = "none";
+        intervalId = setInterval(moveSnake, 200);
+    })
+}
+
+
 
 drawFood(); // Initialisation de la nourriture
 drawSnake(); // Initialisation du serpent
 intervalId = setInterval(moveSnake, 200);
-
-
-
